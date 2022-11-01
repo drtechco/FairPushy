@@ -3,3 +3,5 @@ server/.idea/
 web/.idea/
 web/pubspec.lock
 server/pubspec.lock
+/.idea
+.DS_Store
