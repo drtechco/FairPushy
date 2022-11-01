@@ -1,3 +1,4 @@
+import 'dart:js' as js;
 import 'package:fair_management_web/appmgr/subappmgr/bean/app_list_data.dart';
 import 'package:fair_management_web/network/base_result.dart';
 import 'package:fair_management_web/network/fair_dio.dart';
@@ -48,17 +49,18 @@ class Api {
 
   ///创建并在线编译布丁 && 修改在线编译
   Future<BaseResult?> creatAndBuildPatch(dynamic params) async {
-    var result =
-    await FairDio.instance.post('/web/create_patch_and_build', params: params);
+    var result = await FairDio.instance
+        .post('/web/create_patch_and_build', params: params);
     return result;
   }
 
   ///上传补丁文件
   Future<dynamic> uploadPathFile(String fileName, formData) async {
+    var uploadBaseUrl = getUploadBaseUrl();
     return await FairDio.instance.uploadFile(
         '/kLRHgFeDkLkL/dynamics/' + fileName,
         data: formData,
-        baseUrl: FairDio.uploadBaseUrl);
+        baseUrl: uploadBaseUrl);
   }
 
   ///创建项目
@@ -83,10 +85,10 @@ class Api {
     ResListData? resListData;
     try {
       Map<String, dynamic> params = <String, dynamic>{
-        'appId':'4',
+        'appId': '4',
       };
       var result =
-      await FairDio.instance.get('/web/module_patch', params: params);
+          await FairDio.instance.get('/web/module_patch', params: params);
       var data = result?.data;
       if (data is Map<String, dynamic>) {
         resListData = ResListData.fromJson(data);
@@ -95,5 +97,14 @@ class Api {
       print(e.toString());
     }
     return resListData;
+  }
+
+  String getUploadBaseUrl() {
+    var uploadBaseUrl = FairDio.defaultUploadBaseUrl;
+    var uploadBaseUrlJs = js.context['apiUploadBaseUrl'];
+    if (uploadBaseUrlJs != null && uploadBaseUrlJs.runtimeType==String && uploadBaseUrlJs as String!="\$BASEURL" && uploadBaseUrlJs!="") {
+      uploadBaseUrl = uploadBaseUrlJs ;
+    }
+    return uploadBaseUrl;
   }
 }

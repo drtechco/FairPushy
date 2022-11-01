@@ -1,13 +1,14 @@
 import 'dart:convert';
-
+import 'dart:ui';
+import 'dart:js' as js;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'base_result.dart';
 
 class FairDio {
-  static const String baseUrl = 'http://127.0.0.1:8080/'; //测试地址
-  static const String uploadBaseUrl = 'http://127.0.0.1:8080/'; //上传文件
+  static const String defaultBaseUrl = 'http://127.0.0.1:8080/'; //测试地址
+  static const String defaultUploadBaseUrl = 'http://127.0.0.1:8080/'; //上传文件
 
   static const String baseUrlTo58 = ''; //测试环境
 
@@ -30,6 +31,7 @@ class FairDio {
   }
 
   FairDio() {
+    var baseUrl = getBaseUrl();
     BaseOptions options = BaseOptions(
       baseUrl: baseUrl,
       connectTimeout: connectTimeout,
@@ -222,10 +224,20 @@ class FairDio {
     return response;
   }
 
+  String getBaseUrl() {
+    var baseUrl = defaultBaseUrl;
+    var baseUrlJs = js.context['apiBaseUrl'];
+    if (baseUrlJs != null && baseUrlJs.runtimeType==String && baseUrlJs as String!="\$BASEURL" && baseUrlJs!="") {
+      baseUrl = baseUrlJs ;
+    }
+    return baseUrl;
+  }
+
   /// 上传文件
   Future<Response?> uploadFile(String path,
-      {String baseUrl = baseUrl, @required FormData? data}) async {
+      {String? baseUrl, @required FormData? data}) async {
     /// 打印请求相关信息：请求地址、请求方式、请求参数
+    baseUrl ??= getBaseUrl();
     debugPrint("请求地址：【$baseUrl$path】");
     debugPrint('请求参数：' + data.toString());
     Response? response;
