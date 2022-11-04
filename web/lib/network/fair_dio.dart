@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'dart:js' as js;
+import 'dart:html' as html;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -225,9 +226,13 @@ class FairDio {
   }
 
   String getBaseUrl() {
+    // var location=html.window.location;
+    // var url= location.protocol+"://"+location.host+"/";
+
     var baseUrl = defaultBaseUrl;
     var baseUrlJs = js.context['apiBaseUrl'];
     if (baseUrlJs != null && baseUrlJs.runtimeType==String && baseUrlJs as String!="\$BASEURL" && baseUrlJs!="") {
+
       baseUrl = baseUrlJs ;
     }
     return baseUrl;
