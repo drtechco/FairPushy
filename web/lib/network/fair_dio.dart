@@ -231,7 +231,7 @@ class FairDio {
 
     var baseUrl = defaultBaseUrl;
     var baseUrlJs = js.context['apiBaseUrl'];
-    if (baseUrlJs != null && baseUrlJs.runtimeType==String && baseUrlJs as String!="\$BASEURL" && baseUrlJs!="") {
+    if (baseUrlJs != null && baseUrlJs.runtimeType==String && baseUrlJs as String!="\$API_BASE_URL" && baseUrlJs!="") {
 
       baseUrl = baseUrlJs ;
     }

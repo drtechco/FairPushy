@@ -102,7 +102,7 @@ class Api {
   String getUploadBaseUrl() {
     var uploadBaseUrl = FairDio.defaultUploadBaseUrl;
     var uploadBaseUrlJs = js.context['apiUploadBaseUrl'];
-    if (uploadBaseUrlJs != null && uploadBaseUrlJs.runtimeType==String && uploadBaseUrlJs as String!="\$BASEURL" && uploadBaseUrlJs!="") {
+    if (uploadBaseUrlJs != null && uploadBaseUrlJs.runtimeType==String && uploadBaseUrlJs as String!="\$API_UPLOAD_URL" && uploadBaseUrlJs!="") {
       uploadBaseUrl = uploadBaseUrlJs ;
     }
     return uploadBaseUrl;
